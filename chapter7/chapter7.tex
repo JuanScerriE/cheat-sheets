@@ -1,0 +1,171 @@
+\documentclass[12pt]{article}
+
+\usepackage{tikz}
+\usepackage{cancel}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{latexsym}
+\usepackage{mathtools}
+\usepackage{stackengine}
+
+\usepackage{fancyhdr}
+
+\usepackage{float}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{pagecolor}
+
+\usepackage{soul}
+
+\usepackage[
+top=2.50cm,
+bottom=2.50cm,
+left=2cm,
+right=2cm,
+marginparsep=0pt,
+marginparwidth=0pt]{geometry}
+
+\parindent 0in
+\parskip 12pt
+
+\definecolor{Ivory Paper}{HTML}{F7F0DF}
+
+\pagecolor{Ivory Paper}
+
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+\newcommand{\round}[1]{\left\lfloor #1 \right\rceil}
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert}
+\newcommand{\sqref}[1]{[\ref{#1}]}
+
+\newcommand{\mH}{\char"0126}
+\newcommand{\mh}{\char"0127}
+\newcommand{\mG}{\char"0120}
+\newcommand{\mg}{\char"0121}
+\newcommand{\mC}{\char"010A}
+\newcommand{\mc}{\char"010B}
+\newcommand{\mZ}{\char"017B}
+\newcommand{\mz}{\char"017C}
+
+\newcommand{\defeq}{\stackrel{\text{def}}{=}}
+\newcommand{\msteq}{\stackrel{\text{mst}}{=}}
+\newcommand{\sqemptyset}{\ensurestackMath{\stackinset{c}{}{c}{}{/}{\square}}}
+\newcommand{\sqin}{%
+  \mathrel{\vphantom{\sqsubset}\text{%
+    \mathsurround=0pt
+    \ooalign{$\sqsubset$\cr$-$\cr}%
+  }}%
+}
+
+\theoremstyle{plain}
+\newtheorem{thm}{Theorem}
+\newtheorem{cor}{Corollary}
+\newtheorem{lma}{Lemma}
+\newtheorem{prop}{Proposition}
+\newtheorem{conj}{Conjecture}
+\newtheorem{defn}{Definition}
+
+\setlength{\headheight}{15pt}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0pt}
+\lhead{J. Scerri}
+\chead{Noti g\mh al \st{Qabel} Waqt l-E\.zami}
+\rhead{\thepage}
+
+% TITLE
+
+\title{Discrete 2 (Chapter 7)\\
+\vspace{0.75em}\textbf{Noti g\mh al \st{Qabel} Waqt l-E\.zami}}
+\author {{\textbf{Juan Scerri}}\\
+B.Sc. (Hons)(Melit.) Computing Science and Mathematics (Second Year)}
+
+\begin{document}
+
+\maketitle % Print the title page
+
+\thispagestyle{empty} % Suppress headers and footers on the title page
+
+\raggedright
+
+\section{Relations}
+
+\textbf{Totality:} $r \in X \leftrightarrow Y$ is said to be
+total iff $\operatorname{total}(r) \defeq \forall\, x \in X,
+\exists\, y \in Y : (x, y) \in r$ it true.
+
+\textbf{Functionality:} $r \in X \leftrightarrow Y$ is said to
+be functional iff $\operatorname{functional}(r) \defeq\forall\,
+y_1, y_2 \in Y, \forall\, x \in X : (x, y_1) \in r \land (x,
+y_2) \Rightarrow y_1 = y_2$ is true.
+
+\textbf{Surjectivity:} $r \in X \leftrightarrow Y$ is said to be
+surjective iff $\operatorname{surjective}(r) \defeq\forall\, y
+\in Y, \exists\, x \in X : (x, y) \in r$ is true.
+
+\textbf{Injectivity:} $r \in X \leftrightarrow Y$ is said to be
+injective iff $\operatorname{injective}(r) \defeq \forall\, x_1,
+x_2 \in X, \forall\, y \in Y : (x_1, y) \in r \land (x_2, y)
+\Rightarrow x_1 = x_2$ is true.
+
+\section{Multisets}
+
+\subsection{Definitions}
+
+\textbf{Set of Total and Functional Relations:} $X \rightarrow Y
+\defeq \{r \in X \leftrightarrow Y : \operatorname{total}(r)
+\land \operatorname{functional}(r) \}$
+
+\textbf{Set of Multisets Over $X$:} $\mathbb{M}\,X \defeq X
+\rightarrow \mathbb{N}$.
+
+\textbf{Empty Multiset:} $\sqemptyset \defeq \lambda\, x \in X
+\cdot 0$.
+
+\textbf{Multiset Element Of:} $x \sqin T \defeq T(x) > 0$
+
+\textbf{Multiset Subset:} $T \sqsubseteq S \defeq \forall\, x
+\in X \cdot T(x) \leq S(x)$.
+
+\textbf{Multiset Equality:} $T \msteq S \defeq \forall\, x \in X
+\cdot T(x) = S(x)$.
+
+\textbf{Multiset Union:} $T \sqcup S \defeq \lambda\, x \in X
+\cdot T(x) + S(x)$.
+
+\textbf{Multiset Intersection:} $T \sqcap S \defeq \lambda\, x
+\in X \cdot \operatorname{min}\{T(x), S(x)\}$.
+
+\subsection{Theorems}
+
+\textbf{Theorem 7.4:} $T \sqcup S \msteq S \sqcup T$.
+
+\textbf{Theorem 7.6:} $T \sqcap S \sqsubseteq T \sqcup S$.
+
+\subsection{Exercises}
+
+\textbf{Exercise 7.1:} $T \sqsubseteq T$ (reflexive) and $T
+\sqsubseteq R \land R \sqsubseteq S \Rightarrow T \sqsubseteq S$
+(transitive).
+
+\textbf{Exercise 7.2:} $\sqemptyset \sqcap T \msteq T \sqcap
+\sqemptyset \msteq \sqemptyset$ and $\sqemptyset \sqcup T \msteq
+T \sqcup \sqemptyset \msteq T$.
+
+\textbf{Exercise 7.3:} $T \sqcap T \msteq T$ (idempotent), $T
+\sqcap S \msteq S \sqcap T$ (commutative) and $(T \sqcap S)
+\sqcap R \msteq T \sqcap (S \sqcap R)$ (associative).
+
+\textbf{Exercise 7.4:} $(T \sqcup S)
+\sqcup R \msteq T \sqcup (S \sqcup R)$ (associative).
+
+\textbf{Exercise 7.5:} $T - S \defeq \lambda\, x \in X \cdot
+\operatorname{max}\{0, T(x) - S(x)\}$ (multiset difference), $T
+- T \msteq \sqemptyset$ and $T - \sqemptyset \msteq T$.
+
+\section{Sequences}
+
+\section{Graph Theory}
+
+
+\end{document}
