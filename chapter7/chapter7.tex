@@ -58,6 +58,21 @@ marginparwidth=0pt]{geometry}
   }}%
 }
 
+
+% TODO: Reorder
+\DeclareMathOperator{\jseq}{seq}
+\DeclareMathOperator{\jdom}{dom}
+\DeclareMathOperator{\jupto}{upto}
+\DeclareMathOperator{\jundefined}{undefined}
+\DeclareMathOperator{\jcons}{cons}
+\DeclareMathOperator{\jhead}{head}
+\DeclareMathOperator{\jtail}{tail}
+\DeclareMathOperator{\jlen}{len}
+\DeclareMathOperator{\jtotal}{total}
+\DeclareMathOperator{\jfunctional}{functional}
+\DeclareMathOperator{\jinjective}{injective}
+\DeclareMathOperator{\jsurjective}{surjective}
+
 \theoremstyle{plain}
 \newtheorem{thm}{Theorem}
 \newtheorem{cor}{Corollary}
@@ -91,30 +106,30 @@ B.Sc. (Hons)(Melit.) Computing Science and Mathematics (Second Year)}
 \section{Relations}
 
 \textbf{Totality:} $r \in X \leftrightarrow Y$ is said to be
-total iff $\operatorname{total}(r) \defeq \forall\, x \in X,
-\exists\, y \in Y : (x, y) \in r$ it true.
+total iff $\jtotal(r) \defeq \forall\, x \in X, \exists\, y \in
+Y \cdot (x, y) \in r$ it true.
 
 \textbf{Functionality:} $r \in X \leftrightarrow Y$ is said to
-be functional iff $\operatorname{functional}(r) \defeq\forall\,
-y_1, y_2 \in Y, \forall\, x \in X : (x, y_1) \in r \land (x,
-y_2) \Rightarrow y_1 = y_2$ is true.
+be functional iff $\jfunctional(r) \defeq\forall\, y_1, y_2 \in
+Y, \forall\, x \in X \cdot (x, y_1) \in r \land (x, y_2)
+\Rightarrow y_1 = y_2$ is true.
 
 \textbf{Surjectivity:} $r \in X \leftrightarrow Y$ is said to be
-surjective iff $\operatorname{surjective}(r) \defeq\forall\, y
-\in Y, \exists\, x \in X : (x, y) \in r$ is true.
+surjective iff $\jsurjective(r) \defeq\forall\, y \in Y,
+\exists\, x \in X \cdot (x, y) \in r$ is true.
 
 \textbf{Injectivity:} $r \in X \leftrightarrow Y$ is said to be
-injective iff $\operatorname{injective}(r) \defeq \forall\, x_1,
-x_2 \in X, \forall\, y \in Y : (x_1, y) \in r \land (x_2, y)
+injective iff $\jinjective(r) \defeq \forall\, x_1, x_2 \in X,
+\forall\, y \in Y \cdot (x_1, y) \in r \land (x_2, y)
 \Rightarrow x_1 = x_2$ is true.
+
+\textbf{Set of Total and Functional Relations:} $X \rightarrow Y
+\defeq \{r \in X \leftrightarrow Y : \jtotal(r)
+\land \jfunctional(r) \}$
 
 \section{Multisets}
 
 \subsection{Definitions}
-
-\textbf{Set of Total and Functional Relations:} $X \rightarrow Y
-\defeq \{r \in X \leftrightarrow Y : \operatorname{total}(r)
-\land \operatorname{functional}(r) \}$
 
 \textbf{Set of Multisets Over $X$:} $\mathbb{M}\,X \defeq X
 \rightarrow \mathbb{N}$.
@@ -134,7 +149,7 @@ x_2 \in X, \forall\, y \in Y : (x_1, y) \in r \land (x_2, y)
 \cdot T(x) + S(x)$.
 
 \textbf{Multiset Intersection:} $T \sqcap S \defeq \lambda\, x
-\in X \cdot \operatorname{min}\{T(x), S(x)\}$.
+\in X \cdot \min(\{T(x), S(x)\})$.
 
 \subsection{Theorems}
 
@@ -160,10 +175,64 @@ T \sqcup \sqemptyset \msteq T$.
 \sqcup R \msteq T \sqcup (S \sqcup R)$ (associative).
 
 \textbf{Exercise 7.5:} $T - S \defeq \lambda\, x \in X \cdot
-\operatorname{max}\{0, T(x) - S(x)\}$ (multiset difference), $T
-- T \msteq \sqemptyset$ and $T - \sqemptyset \msteq T$.
+\max(\{0, T(x) - S(x)\})$ (multiset difference), $T - T \msteq
+\sqemptyset$ and $T - \sqemptyset \msteq T$.
 
 \section{Sequences}
+
+\textbf{Finite Subsets of $\mathbb{N}$:} $\jupto(N)
+\defeq \{n \in \mathbb{N} : n < N\}\ (= \{0, 1, \ldots, N - 1\})$.
+
+\textbf{Set of Sequences Over $X$:} $\jseq\, X = \{s_X \in
+\mathbb{N} \rightarrow X : \exists\, N \in \mathbb{N} \cdot
+\jdom(s_X) = \jupto(N)\}$.
+
+\textbf{Empty Sequence:} $\langle \rangle \defeq \lambda\, n \in
+\mathbb{N} \cdot \jundefined$.
+
+\textbf{Head of a Sequence:} $\jhead(s_X) \defeq s_X(0)$.
+
+\textbf{Tail of a Sequence:} $\jtail(s_X) \defeq \lambda\, n \in
+\mathbb{N} \cdot s_X(n + 1)$.
+
+\textbf{Cons Operator:}
+$$
+\jcons(x, s_X) \defeq \lambda\, n \in \mathbb{N}
+\cdot
+\begin{cases}
+    x          & \text{if}\ n = 0\\
+    s_X(n - 1) & \text{otherwise}
+\end{cases}.
+$$
+
+\textbf{Length of a Sequence:}
+
+\begin{align*}
+\jlen(s_X) &\defeq
+\begin{cases}
+    0                    & \text{if}\ n = 0\\
+    1 + \max(\jdom(s_X)) & \text{otherwise}
+\end{cases},\ \text{(Non-recursive)}.\\\\
+    &\defeq
+\begin{cases}
+    0                   & \text{if}\ n = 0\\
+    1 + \jlen(\jtail(s_X)) & \text{otherwise}
+\end{cases},\ \text{(Recursive)}.
+\end{align*}
+$$
+\jlen(s_X) \defeq
+\begin{cases}
+    0                   & \text{if}\ n = 0\\
+    1 + \max(\jdom(s_X)) & \text{otherwise}
+\end{cases},\ \text{(Non-recursive)}.
+$$
+$$
+\jlen(s_X) \defeq
+\begin{cases}
+    0                   & \text{if}\ n = 0\\
+    1 + \jlen(\jtail(s_X)) & \text{otherwise}
+\end{cases},\ \text{(Recursive)}.
+$$
 
 \section{Graph Theory}
 
