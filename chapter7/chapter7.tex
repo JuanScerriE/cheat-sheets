@@ -17,6 +17,7 @@
 \usepackage{pagecolor}
 
 \usepackage{soul}
+\usepackage{enumerate}
 
 \usepackage[
 top=2.50cm,
@@ -77,15 +78,25 @@ marginparwidth=0pt]{geometry}
 \DeclareMathOperator{\jdag}{dag}
 \DeclareMathOperator{\jfalse}{\mathbf{False}}
 \DeclareMathOperator{\jseq}{seq}
+\DeclareMathOperator{\jsharedstructure}{sharedstructure}
 \DeclareMathOperator{\jwalk}{walk}
 \DeclareMathOperator{\jlabelwalk}{labelwalk}
 \DeclareMathOperator{\jlabelwalks}{labelwalks}
 \DeclareMathOperator{\jpredecessors}{predecessors}
 \DeclareMathOperator{\jreachable}{reachable}
+\DeclareMathOperator{\jhamiltonian}{hamiltonian}
+\DeclareMathOperator{\jsimplecycle}{simplecycle}
+\DeclareMathOperator{\jsimplecycles}{simplecycles}
 \DeclareMathOperator{\jcycle}{cycle}
+\DeclareMathOperator{\jconnected}{connected}
+\DeclareMathOperator{\jweaklyconnected}{weaklyconnected}
 \DeclareMathOperator{\jcycles}{cycles}
 \DeclareMathOperator{\jreverse}{reverse}
 \DeclareMathOperator{\jdom}{dom}
+\DeclareMathOperator{\jpath}{path}
+\DeclareMathOperator{\jpaths}{paths}
+\DeclareMathOperator{\jdiameter}{diameter}
+\DeclareMathOperator{\jrng}{rng}
 \DeclareMathOperator{\jclique}{clique}
 \DeclareMathOperator{\jsum}{sum}
 \DeclareMathOperator{\jtree}{tree}
@@ -189,24 +200,25 @@ X \rightarrow \mathbb{N} : \jtotal(r)\}$.
 
 \subsection{Exercises}
 
-\textbf{Exercise 7.1:} $T \sqsubseteq T$ (reflexive) and $T
-\sqsubseteq R \land R \sqsubseteq S \Rightarrow T \sqsubseteq S$
-(transitive).
+\textbf{Exercise 7.1:} $T \sqsubseteq T$ \textit{(reflexive)}
+and $T \sqsubseteq R \land R \sqsubseteq S \Rightarrow T
+\sqsubseteq S$ \textit{(transitive)}.
 
 \textbf{Exercise 7.2:} $\sqemptyset \sqcap T \msteq T \sqcap
 \sqemptyset \msteq \sqemptyset$ and $\sqemptyset \sqcup T \msteq
 T \sqcup \sqemptyset \msteq T$.
 
-\textbf{Exercise 7.3:} $T \sqcap T \msteq T$ (idempotent), $T
-\sqcap S \msteq S \sqcap T$ (commutative) and $(T \sqcap S)
-\sqcap R \msteq T \sqcap (S \sqcap R)$ (associative).
+\textbf{Exercise 7.3:} $T \sqcap T \msteq T$
+\textit{(idempotent)}, $T \sqcap S \msteq S \sqcap T$
+\textit{(commutative)} and $(T \sqcap S) \sqcap R \msteq T
+\sqcap (S \sqcap R)$ \textit{(associative)}.
 
-\textbf{Exercise 7.4:} $(T \sqcup S)
-\sqcup R \msteq T \sqcup (S \sqcup R)$ (associative).
+\textbf{Exercise 7.4:} $(T \sqcup S) \sqcup R \msteq T \sqcup (S
+\sqcup R)$ \textit{(associative)}.
 
 \textbf{Exercise 7.5:} $T - S \dfeq \lambda\, x \in X \cdot
-\max(\{0, T(x) - S(x)\})$ (multiset difference), $T - T \msteq
-\sqemptyset$ and $T - \sqemptyset \msteq T$.
+\max(\{0, T(x) - S(x)\})$ \textit{(multiset difference)}, $T - T
+\msteq \sqemptyset$ and $T - \sqemptyset \msteq T$.
 
 \section{Sequences}
 
@@ -301,7 +313,8 @@ r_{1_X}, r_{2_X} \in \jseq\, X \cdot r_{1_X} \pp t_X \pp r_{2_X}
 \jlast(s_X)$.
 
 \textbf{Exercise 7.8:} $x \seqin s_X \dfeq \exists\, n \in
-\mathbb{N} \cdot n \in \jdom(s_X) \land s_X(n) = x$.
+\mathbb{N} \cdot n \in \jdom(s_X) \land s_X(n) = x$
+\textit{(sequence element of)}.
 
 \textbf{Exercise 7.9:}
 
@@ -329,20 +342,15 @@ s_X') \in \jseq\, X \times \jseq\, X : \jitems(s_X) \msteq
 
 \textbf{Exercise 7.13:}
 
-$$
-\begin{aligned}
-\text{(i)}\quad &
-\jreverse(s_X) \dfeq
-\begin{cases}
-    s_X & \text{if}\ \jlen(s_X) \leq 1\\
-    \jreverse(\jtail(s_X)) \pp \jcons(\jhead(s_X), \langle
-    \rangle) & \text{otherwise}
-\end{cases}.\\
-\text{(ii)}\quad &
-\jreverse(s_X) \dfeq \lambda\, n \in \mathbb{N} \cdot
-s_X(\jlen(s_X) - (n + 1)).
-\end{aligned}
-$$
+\begin{enumerate}[(i)]
+    \item $\jreverse(s_X) \dfeq
+        \begin{cases} s_X & \text{if}\
+            \jlen(s_X) \leq 1\\ \jreverse(\jtail(s_X)) \pp
+            \jcons(\jhead(s_X), \langle \rangle) & \text{otherwise}
+        \end{cases}.$
+    \item $\jreverse(s_X) \dfeq \lambda\, n \in \mathbb{N} \cdot
+        s_X(\jlen(s_X) - (n + 1))$.
+\end{enumerate}
 
 \section{Graph Theory}
 
@@ -456,7 +464,42 @@ Vertices on the same level e.g. $P_1$ and $Q_1$ are not
 connected. Additionally, complementary vertices e.g. $P_1$ and
 $\neg P_2$ are not connected.
 
-Finding a clique corresponds to a solution of the boolean
-expression.
+Finding a clique corresponds to a solution for the boolean
+expression e.g. $Q_1$, $\neg P_2$ and $R_3$. This means SAT is
+as hard as finding cliques.
+
+\subsection{Exercises}
+
+\textbf{Exercise 7.14:} $\jhamiltonian(s_V) \dfeq \forall\, v
+\in V, \exists_{1}\, n \in \mathbb{N} \cdot s_V(n) = v$.
+
+\textbf{Exercise 7.15:} $\jsimplecycle(s_V) \dfeq \jcycle(s_V)
+\land \#\jrng(s_V) + 1 = \jlen(s_V)$, $\jsimplecycles(G) \dfeq
+\{s_V \in \jseq\, V : \jsimplecycle(s_V)\}$.
+
+\textbf{Exercise 7.16:} $\jpath(s_V) \dfeq \jwalk(s_V) \land
+\#\jrng(s_V) = \jlen(s_V)$, $\jdiameter(G) \dfeq \max(\{s_V \in
+\jseq\, V : \jpath(s_V) \cdot \jlen(s_V)\})$.
+
+\textbf{Exercise 7.17:}
+
+\begin{enumerate}[(i)]
+    \item $\hat{E} \dfeq \{(v, l, v') \in V\times L \times V :
+        (v, l, v') \in E \cdot (v', l, v)\}$, $\hat{G} \dfeq (V,
+        L, E \cup \hat{E})$ \textit{(undirected $G$)}.
+    \item $\jconnected(G) \dfeq \forall\, v, v' \in V, \exists\,
+        s_V \in \jseq\, V \cdot \jpath(s_V) \land \jhead(s_V) =
+        v \land \jlast(s_V) = v'$, $\jweaklyconnected(G) \dfeq
+        \jconnected(\hat{G})$.
+    \item $\jsharedstructure(G) \dfeq \exists\, v, v' \in V,
+        \exists\, s_V, s_V' \in \jseq\, V \cdot \jpath(s_V)
+        \land \jpath(s_V') \land \neg(s_V \seqeq s_V') \land
+        ((\jhead(s_V) = \jhead(s_V') = v \land \jlast(s_V) =
+        \jlast(s_V') = v') \vee (\jhead(s_V) = \jlast(s_V') = v
+        \land \jlast(s_V) = \jhead(s_V') = v'))$ \textit{(at
+        least two vertices are joined by two distinct paths)}.
+    \item $\jtree(G) \dfeq \jdag(G) \land \jweaklyconnected(G)
+        \land \neg \jsharedstructure(G)$.
+\end{enumerate}
 
 \end{document}
