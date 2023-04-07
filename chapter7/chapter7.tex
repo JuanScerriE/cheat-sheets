@@ -74,12 +74,23 @@ marginparwidth=0pt]{geometry}
 
 % TODO: Reorder
 \DeclareMathOperator{\jtrue}{\mathbf{True}}
+\DeclareMathOperator{\jdag}{dag}
 \DeclareMathOperator{\jfalse}{\mathbf{False}}
 \DeclareMathOperator{\jseq}{seq}
+\DeclareMathOperator{\jwalk}{walk}
+\DeclareMathOperator{\jlabelwalk}{labelwalk}
+\DeclareMathOperator{\jlabelwalks}{labelwalks}
+\DeclareMathOperator{\jpredecessors}{predecessors}
+\DeclareMathOperator{\jreachable}{reachable}
+\DeclareMathOperator{\jcycle}{cycle}
+\DeclareMathOperator{\jcycles}{cycles}
 \DeclareMathOperator{\jreverse}{reverse}
 \DeclareMathOperator{\jdom}{dom}
+\DeclareMathOperator{\jclique}{clique}
 \DeclareMathOperator{\jsum}{sum}
+\DeclareMathOperator{\jtree}{tree}
 \DeclareMathOperator{\jitems}{items}
+\DeclareMathOperator{\jwalks}{walks}
 \DeclareMathOperator{\jsorted}{sorted}
 \DeclareMathOperator{\jupto}{upto}
 \DeclareMathOperator{\jundefined}{undefined}
@@ -334,5 +345,118 @@ s_X(\jlen(s_X) - (n + 1)).
 $$
 
 \section{Graph Theory}
+
+\subsection{Definitions}
+
+\textbf{Directed Multigraph:} $G$ is said to be a directed
+multigraph iff $G = (V, L, E)$ where $E \subseteq V \times L
+\times V$.
+
+\textbf{A Clique in $G$:} $V' \subseteq V$ is said to be a clique iff
+$\jclique(V') \dfeq \forall\, v, v' \in V' \cdot v \neq v'
+\Rightarrow (\exists\, l \in L \cdot (v, l, v') \in E)$ is true.
+
+\textbf{A Walk in $G$:} $s_V \in V$ is said to be a walk iff
+$\jwalk(s_V) \dfeq \forall\, n \in \mathbb{N} \cdot n \in
+\jupto(\jlen(s_V) - 1) \Rightarrow (\exists\, l \in L \cdot
+(s_V(n), l, s_V(n + 1) \in E)$ is true.
+
+\textbf{Set of Walks in $G$:} $\jwalks(G) \dfeq \{s_V \in
+\jseq\, V : \jwalk(s_V)\}$.
+
+\textbf{A Cycle in $G$:} $s_V \in V$ is said to be a cycle iff
+$\jcycle(s_V) \dfeq \jwalk(s_V) \land \jhead(s_V) = \jlast(s_V)$
+is true. 
+
+\textbf{Set of Cycles in $G$:} $\jcycles(G) \dfeq \{s_V \in
+\jseq\, V : \jcycle(s_V)\}$.
+
+\textbf{Directed Acyclic Graph (DAG):} $G$ is said to be a DAG
+iff $\jdag(G) \dfeq \jcycles(G) = \emptyset$ is true. 
+
+\textbf{Set of Predecessors of $v$:} $\jpredecessors(v) \dfeq \{v'
+\in V : \exists\, l \in L \cdot (v', l, v) \in E\}$.
+
+\textbf{Set of Vertices Reachable from $v$:} $\jreachable(v) \dfeq \{v'
+\in V : \exists s_V \in \jseq\, V \cdot \jwalk(s_V)
+\land \jhead(s_V) = v \land \jlast(s_V) = v'\}$.
+
+\textbf{Tree:} $G$ is said to be a tree iff $\jtree(G) \dfeq
+(\forall\, v \in V \cdot \#\jpredecessors(v) \leq 1) \land
+(\exists_{1}\, v \in V \cdot \#\jpredecessors(v) = 0) \land
+(\forall\, v \in V \cdot \#\jpredecessors(v) = 0 \Rightarrow
+\jreachable(v) = V)$ is true.
+
+\textbf{A Label Walk in $G$:} $s_L \in \jseq\, L$ is said to be
+a label walk iff $\exists\, s_V \in \jseq\, V \cdot
+\jlabelwalk(s_L, s_V) \dfeq \jwalk(s_V) \land \jlen(s_V) =
+\jlen(s_L) + 1 \land (\forall\, n \in \mathbb{N} \cdot n \in
+\jupto(\jlen(s_V) - 1) \Rightarrow (s_V(n), s_L(n), s_V(n + 1))
+\in E)$ is true.
+
+\textbf{Set of Label Walks in $G$:} $\jlabelwalks(G) \dfeq
+\{(s_L, s_V) \in \jseq\, L \times \jseq\, V : \jlabelwalk(s_L,
+s_V)\}$.
+
+\textbf{Travelling Salesman Problem (TSP):} Let $G = (V,
+\mathbb{N}, E)$ and suppose a buget $B$, is the following
+predicate true? $\exists\, (s_L, s_V) \in \jlabelwalks(G) \cdot
+\operatorname{ran}(s_V) = V \land \jsum(s_L) \leq B$.
+
+\textbf{Boolean Satisfiability Problem (SAT):} Consider the
+following boolean expression:
+
+$$
+\begin{aligned}
+&\ (P \vee Q \vee R)\\
+\land &\ (\neg P \vee \neg R)\\
+\land &\ (P \vee R \vee \neg Q)
+\end{aligned}
+$$
+
+$$\big\downarrow$$
+
+\begin{center}
+    \begin{tikzpicture}
+        [scale=.8,auto=center]
+
+        \node (p1) at (0,4) {$P_1$};
+        \node (q1) at (3,4) {$Q_1$};
+        \node (r1) at (6,4) {$R_1$};
+        \node (p2) at (1.5,2) {$\neg P_2$};
+        \node (r2) at (4.5,2) {$\neg R_2$};
+        \node (p3) at (0,0) {$P_3$};
+        \node (r3) at (3,0) {$R_3$};
+        \node (q3) at (6,0) {$\neg Q_3$};
+        
+        \draw[to-to] (p1) edge (q3);
+        \draw[to-to] (p1) edge [bend left = 1.5em] (r2);
+        \draw[to-to] (p1) edge [bend right = 3em] (r3);
+        \draw[to-to] (p1) edge [bend right = 3em] (p3);
+
+        \draw[to-to] (q1) edge [bend left = 1.5em] (r2);
+        \draw[to-to] (q1) edge [bend right = 1.5em](p2);
+        \draw[to-to] (q1) edge (r3);
+        \draw[to-to] (q1) edge [bend right = 3em] (p3);
+
+        \draw[to-to] (r1) edge (p3);
+        \draw[to-to] (r1) edge [bend right = 1.5em] (p2);
+        \draw[to-to] (r1) edge [bend left = 3em] (r3);
+        \draw[to-to] (r1) edge [bend left = 3em] (q3);
+
+        \draw[to-to] (p2) edge [bend right = 1.5em] (r3);
+        \draw[to-to] (p2) edge [bend right = 1.5em] (q3);
+
+        \draw[to-to] (r2) edge [bend left = 1.5em] (q3);
+        \draw[to-to] (r2) edge [bend left = 1.5em] (p3);
+    \end{tikzpicture}
+\end{center}
+
+Vertices on the same level e.g. $P_1$ and $Q_1$ are not
+connected. Additionally, complementary vertices e.g. $P_1$ and
+$\neg P_2$ are not connected.
+
+Finding a clique corresponds to a solution of the boolean
+expression.
 
 \end{document}
