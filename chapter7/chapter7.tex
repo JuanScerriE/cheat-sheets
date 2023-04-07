@@ -48,9 +48,14 @@ marginparwidth=0pt]{geometry}
 \newcommand{\mZ}{\char"017B}
 \newcommand{\mz}{\char"017C}
 
-\newcommand{\defeq}{\stackrel{\text{def}}{=}}
+\newcommand\mscriptsize[1]{\mbox{\scriptsize\ensuremath{#1}}}
+\newcommand\mtiny[1]{\mbox{\tiny\ensuremath{#1}}}
+
+\newcommand{\dfeq}{\stackrel{\text{df}}{=}}
 \newcommand{\msteq}{\stackrel{\text{mst}}{=}}
+\newcommand{\seqeq}{\stackrel{\text{seq}}{=}}
 \newcommand{\sqemptyset}{\ensurestackMath{\stackinset{c}{}{c}{}{/}{\square}}}
+
 \newcommand{\sqin}{%
   \mathrel{\vphantom{\sqsubset}\text{%
     \mathsurround=0pt
@@ -58,14 +63,29 @@ marginparwidth=0pt]{geometry}
   }}%
 }
 
+\newcommand{\seqin}{%
+  \mathrel{\vphantom{<}\text{%
+    \mathsurround=0pt
+    \ooalign{$<$\cr$-$\cr}%
+  }}%
+}
+
+\newcommand{\pp}{\mathbin{\mbox{{+}\nolinebreak\hspace{-.15em}{+}}}}
 
 % TODO: Reorder
+\DeclareMathOperator{\jtrue}{\mathbf{True}}
+\DeclareMathOperator{\jfalse}{\mathbf{False}}
 \DeclareMathOperator{\jseq}{seq}
+\DeclareMathOperator{\jreverse}{reverse}
 \DeclareMathOperator{\jdom}{dom}
+\DeclareMathOperator{\jsum}{sum}
+\DeclareMathOperator{\jitems}{items}
+\DeclareMathOperator{\jsorted}{sorted}
 \DeclareMathOperator{\jupto}{upto}
 \DeclareMathOperator{\jundefined}{undefined}
 \DeclareMathOperator{\jcons}{cons}
 \DeclareMathOperator{\jhead}{head}
+\DeclareMathOperator{\jlast}{last}
 \DeclareMathOperator{\jtail}{tail}
 \DeclareMathOperator{\jlen}{len}
 \DeclareMathOperator{\jtotal}{total}
@@ -106,49 +126,48 @@ B.Sc. (Hons)(Melit.) Computing Science and Mathematics (Second Year)}
 \section{Relations}
 
 \textbf{Totality:} $r \in X \leftrightarrow Y$ is said to be
-total iff $\jtotal(r) \defeq \forall\, x \in X, \exists\, y \in
+total iff $\jtotal(r) \dfeq \forall\, x \in X, \exists\, y \in
 Y \cdot (x, y) \in r$ it true.
 
 \textbf{Functionality:} $r \in X \leftrightarrow Y$ is said to
-be functional iff $\jfunctional(r) \defeq\forall\, y_1, y_2 \in
+be functional iff $\jfunctional(r) \dfeq\forall\, y_1, y_2 \in
 Y, \forall\, x \in X \cdot (x, y_1) \in r \land (x, y_2)
 \Rightarrow y_1 = y_2$ is true.
 
 \textbf{Surjectivity:} $r \in X \leftrightarrow Y$ is said to be
-surjective iff $\jsurjective(r) \defeq\forall\, y \in Y,
+surjective iff $\jsurjective(r) \dfeq\forall\, y \in Y,
 \exists\, x \in X \cdot (x, y) \in r$ is true.
 
 \textbf{Injectivity:} $r \in X \leftrightarrow Y$ is said to be
-injective iff $\jinjective(r) \defeq \forall\, x_1, x_2 \in X,
+injective iff $\jinjective(r) \dfeq \forall\, x_1, x_2 \in X,
 \forall\, y \in Y \cdot (x_1, y) \in r \land (x_2, y)
 \Rightarrow x_1 = x_2$ is true.
 
-\textbf{Set of Total and Functional Relations:} $X \rightarrow Y
-\defeq \{r \in X \leftrightarrow Y : \jtotal(r)
-\land \jfunctional(r) \}$
+\textbf{Set of Functional Relations:} $X \rightarrow Y
+\dfeq \{r \in X \leftrightarrow Y : \jfunctional(r) \}$.
 
 \section{Multisets}
 
 \subsection{Definitions}
 
-\textbf{Set of Multisets Over $X$:} $\mathbb{M}\,X \defeq X
-\rightarrow \mathbb{N}$.
+\textbf{Set of Multisets Over $X$:} $\mathbb{M}\,X \dfeq \{r \in
+X \rightarrow \mathbb{N} : \jtotal(r)\}$.
 
-\textbf{Empty Multiset:} $\sqemptyset \defeq \lambda\, x \in X
+\textbf{Empty Multiset:} $\sqemptyset \dfeq \lambda\, x \in X
 \cdot 0$.
 
-\textbf{Multiset Element Of:} $x \sqin T \defeq T(x) > 0$
+\textbf{Multiset Element Of:} $x \sqin T \dfeq T(x) > 0$
 
-\textbf{Multiset Subset:} $T \sqsubseteq S \defeq \forall\, x
+\textbf{Multiset Subset:} $T \sqsubseteq S \dfeq \forall\, x
 \in X \cdot T(x) \leq S(x)$.
 
-\textbf{Multiset Equality:} $T \msteq S \defeq \forall\, x \in X
+\textbf{Multiset Equality:} $T \msteq S \dfeq \forall\, x \in X
 \cdot T(x) = S(x)$.
 
-\textbf{Multiset Union:} $T \sqcup S \defeq \lambda\, x \in X
+\textbf{Multiset Union:} $T \sqcup S \dfeq \lambda\, x \in X
 \cdot T(x) + S(x)$.
 
-\textbf{Multiset Intersection:} $T \sqcap S \defeq \lambda\, x
+\textbf{Multiset Intersection:} $T \sqcap S \dfeq \lambda\, x
 \in X \cdot \min(\{T(x), S(x)\})$.
 
 \subsection{Theorems}
@@ -174,30 +193,33 @@ T \sqcup \sqemptyset \msteq T$.
 \textbf{Exercise 7.4:} $(T \sqcup S)
 \sqcup R \msteq T \sqcup (S \sqcup R)$ (associative).
 
-\textbf{Exercise 7.5:} $T - S \defeq \lambda\, x \in X \cdot
+\textbf{Exercise 7.5:} $T - S \dfeq \lambda\, x \in X \cdot
 \max(\{0, T(x) - S(x)\})$ (multiset difference), $T - T \msteq
 \sqemptyset$ and $T - \sqemptyset \msteq T$.
 
 \section{Sequences}
 
+\subsection{Definitions}
+
 \textbf{Finite Subsets of $\mathbb{N}$:} $\jupto(N)
-\defeq \{n \in \mathbb{N} : n < N\}\ (= \{0, 1, \ldots, N - 1\})$.
+\dfeq \{n \in \mathbb{N} : n < N\} = \{0, 1, \ldots, N - 1\}$.
 
 \textbf{Set of Sequences Over $X$:} $\jseq\, X = \{s_X \in
 \mathbb{N} \rightarrow X : \exists\, N \in \mathbb{N} \cdot
 \jdom(s_X) = \jupto(N)\}$.
 
-\textbf{Empty Sequence:} $\langle \rangle \defeq \lambda\, n \in
+\textbf{Empty Sequence:} $\langle \rangle \dfeq \lambda\, n \in
 \mathbb{N} \cdot \jundefined$.
 
-\textbf{Head of a Sequence:} $\jhead(s_X) \defeq s_X(0)$.
+\textbf{Head of a Sequence:} $\jhead(s_X) \dfeq s_X(0)$.
 
-\textbf{Tail of a Sequence:} $\jtail(s_X) \defeq \lambda\, n \in
+\textbf{Tail of a Sequence:} $\jtail(s_X) \dfeq \lambda\, n \in
 \mathbb{N} \cdot s_X(n + 1)$.
 
 \textbf{Cons Operator:}
+
 $$
-\jcons(x, s_X) \defeq \lambda\, n \in \mathbb{N}
+\jcons(x, s_X) \dfeq \lambda\, n \in \mathbb{N}
 \cdot
 \begin{cases}
     x          & \text{if}\ n = 0\\
@@ -207,34 +229,110 @@ $$
 
 \textbf{Length of a Sequence:}
 
-\begin{align*}
-\jlen(s_X) &\defeq
+$$
+\begin{aligned}
+\jlen(s_X) &\dfeq
 \begin{cases}
-    0                    & \text{if}\ n = 0\\
-    1 + \max(\jdom(s_X)) & \text{otherwise}
-\end{cases},\ \text{(Non-recursive)}.\\\\
-    &\defeq
-\begin{cases}
-    0                   & \text{if}\ n = 0\\
+    0 & \text{if}\ s_X \seqeq \langle \rangle\\
     1 + \jlen(\jtail(s_X)) & \text{otherwise}
-\end{cases},\ \text{(Recursive)}.
-\end{align*}
-$$
-\jlen(s_X) \defeq
+\end{cases}\\\\
+&= \lambda\, n \in \mathbb{N} \cdot
 \begin{cases}
-    0                   & \text{if}\ n = 0\\
+    0 & \text{if}\ s_X \seqeq \langle \rangle\\
     1 + \max(\jdom(s_X)) & \text{otherwise}
-\end{cases},\ \text{(Non-recursive)}.
+\end{cases}.
+\end{aligned}
 $$
+
+\textbf{Last Element of a Sequence:} $\jlast(s_X) \dfeq
+s_X(\jlen(s_X) - 1)$.
+
+\textbf{Sum of a Sequence of Natural Numbers:}
+
 $$
-\jlen(s_X) \defeq
+\jsum(s_\mathbb{N}) \dfeq
 \begin{cases}
-    0                   & \text{if}\ n = 0\\
-    1 + \jlen(\jtail(s_X)) & \text{otherwise}
-\end{cases},\ \text{(Recursive)}.
+    0 & \text{if}\ s_\mathbb{N} \seqeq \langle \rangle\\
+    \jhead(s_\mathbb{N}) + \jsum(\jtail(s_\mathbb{N})) & \text{otherwise}
+\end{cases}.
+$$
+
+\textbf{Sequence Concatenation:}
+
+$$
+\begin{aligned}
+t_X \pp s_X &\dfeq
+\begin{cases}
+    s_X & \text{if}\ t_X \seqeq \langle \rangle\\
+    \jcons(\jhead(t_X), \jtail(t_X) \pp s_X) & \text{otherwise}
+\end{cases}\\\\
+&= \lambda\, n \in \mathbb{N} \cdot
+\begin{cases}
+    t_X(n) & \text{if}\ n \in \jdom(t_X)\\
+    s_X(n - \jlen(t_X)) & \text{otherwise}
+\end{cases}.
+\end{aligned}
+$$
+
+\textbf{Prefix of a Sequence:} $t_X \preceq_{p} s_X \dfeq \exists\,
+r_X \in \jseq\, X \cdot t_X \pp r_X \seqeq s_X$.
+
+\textbf{Suffix of a Sequence:} $t_X \preceq_{s} s_X \dfeq \exists\,
+r_X \in \jseq\, X \cdot r_X \pp t_X \seqeq s_X$.
+
+\textbf{Exact Subsequence:} $t_X \preceq s_X \dfeq \exists\,
+r_{1_X}, r_{2_X} \in \jseq\, X \cdot r_{1_X} \pp t_X \pp r_{2_X}
+\seqeq s_X$.
+
+\subsection{Exercises}
+
+\textbf{Exercise 7.7:} $\jlen(s_X) = 1 \Rightarrow \jhead(s_X) =
+\jlast(s_X)$.
+
+\textbf{Exercise 7.8:} $x \seqin s_X \dfeq \exists\, n \in
+\mathbb{N} \cdot n \in \jdom(s_X) \land s_X(n) = x$.
+
+\textbf{Exercise 7.9:}
+
+$$
+\jsorted(s_X) \dfeq
+\begin{cases}
+    \jtrue & \text{if}\ \jlen(s_X) \leq  1\\
+    \jhead(s_X) \leq_{X} \jhead(\jtail(s_X)) \land
+    \jsorted(\jtail(s_X)) & \text{otherwise}
+\end{cases}.
+$$
+
+\textbf{Exercise 7.10:} $\jitems \dfeq \lambda\, s_X \in \jseq\,
+X \cdot (\lambda\, x \in X \cdot \#\{n \in \mathbb{N} : s_X(n) =
+x\})$.
+
+\textbf{Exercise 7.11:} $\operatorname{sorts} \dfeq \{(s_X,
+s_X') \in \jseq\, X \times \jseq\, X : \jitems(s_X) \msteq
+\jitems(s_X') \land \jsorted(s_X) \}$. Hence, $(s_X, s_X') \in
+\operatorname{sorts}$ iff $s_X$ is a sorted version of $s_X'$.
+
+\textbf{Exercise 7.12:} $s_X \seqeq s_X' \dfeq \jlen(s_X) =
+\jlen(s_X') \land \forall\, n \in \mathbb{N} \cdot n \in
+\jupto(\jlen(s_X)) \Rightarrow s_X(n) = s_X'(n)$. 
+
+\textbf{Exercise 7.13:}
+
+$$
+\begin{aligned}
+\text{(i)}\quad &
+\jreverse(s_X) \dfeq
+\begin{cases}
+    s_X & \text{if}\ \jlen(s_X) \leq 1\\
+    \jreverse(\jtail(s_X)) \pp \jcons(\jhead(s_X), \langle
+    \rangle) & \text{otherwise}
+\end{cases}.\\
+\text{(ii)}\quad &
+\jreverse(s_X) \dfeq \lambda\, n \in \mathbb{N} \cdot
+s_X(\jlen(s_X) - (n + 1)).
+\end{aligned}
 $$
 
 \section{Graph Theory}
-
 
 \end{document}
